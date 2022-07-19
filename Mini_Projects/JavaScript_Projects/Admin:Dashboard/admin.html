@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>admin panel</title>
+    <style>
+        body {
+            background-color: black;
+        }
+
+        #navbar {
+            background-color: white;
+            display: flex;
+            padding: 10px;
+            justify-content: space-around;
+        }
+
+        a {
+            color: rgb(15, 14, 14);
+            text-decoration: none;
+        }
+
+        h2 {
+            text-align: center;
+            color: rgb(236, 231, 237);
+            font-size: 50px;
+            height: 50px;
+        }
+
+        #form {
+            height: 400px;
+            width: 400px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            box-shadow: rgb(118, 108, 108) 0px 5px 15px;
+            padding: 20px;
+            background-color: white;
+
+        }
+
+        .allinput {
+            height: 40px;
+            border: 2px solid rgb(12, 12, 13);
+            border-radius: 5px;
+
+        }
+
+        #add {
+            background-color: black;
+            border-radius: 20px;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="navbar"></div>
+    <h2>Dashboard</h2>
+    <form action="" id="form">
+        <input class="allinput" type="text" id="name" placeholder="Enter Product name">
+        <input class="allinput" type="text" id="category" placeholder="Enter Product Category">
+        <input class="allinput" type="url" id="image" placeholder=" Enter Image Url">
+        <input class="allinput" type="number" id="price" placeholder="Enter Price">
+        <select class="allinput" name="" id="gender">
+            <option value="Man">Man</option>
+            <option value="Woman">Woman</option>
+        </select>
+        <select class="allinput" name="" id="sold">
+            <option value="false">False</option>
+            <option value="true">True</option>
+        </select>
+        <input class="allinput" id="add" type="submit">
+    </form>
+</body>
+
+</html>
+<script type="module">
+    import { navbar } from "./navbar.js"
+    document.getElementById("navbar").innerHTML = navbar()
+</script>
+
+<script>
+    document.querySelector("#form").addEventListener("submit", productFun);
+    let arr = JSON.parse(localStorage.getItem("Products")) || [];
+
+    function productFun() {
+        event.preventDefault();
+        let fname = document.querySelector("#name").value;
+        let fcategory = document.querySelector("#category").value;
+        let fimg = document.querySelector("#image").value;
+        let fprice = document.querySelector("#price").value;
+        let fgender = document.querySelector("#gender").value;
+        let fboolen = document.querySelector("#sold").value;
+
+        let p = new NewProduct(fname, fcategory, fimg, fprice, fgender, fboolen);
+        arr.push(p);
+        localStorage.setItem("Products", JSON.stringify(arr));
+        window.location.reload()
+    }
+
+
+    function NewProduct(name, cat, img, pric, gen, bool) {
+        this.name = name;
+        this.category = cat;
+        this.image = img;
+        this.price = pric;
+        this.gender = gen;
+        this.sold = bool;
+    }
+</script>

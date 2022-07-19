@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>product page</title>
+</head>
+<style>
+    body {
+        background-color: black;
+    }
+
+    #navbar {
+        background-color: white;
+        display: flex;
+        padding: 10px;
+        justify-content: space-around;
+    }
+
+    a {
+        color: rgb(15, 14, 14);
+        text-decoration: none;
+    }
+
+    #container {
+        justify-content: center;
+        display: grid;
+        grid-template-columns: repeat(4, 250px);
+        grid-template-rows: repeat(1, 400px);
+        gap: 20px;
+        background-color: white;
+    }
+
+    #container>div {
+        display: flex;
+        flex-direction: column;
+        border-radius: 10px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        background-color: rgb(12, 14, 11);
+    }
+
+    #src {
+        width: 100%;
+        height: 57%;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    #divfo {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        color: white;
+    }
+
+    #item {
+        color: white;
+    }
+</style>
+
+<body>
+    <div id="navbar"></div>
+    <h1 id="item">
+        product:0
+    </h1>
+    <div id="container">
+    </div>
+</body>
+
+</html>
+<script type="module">
+    import { navbar } from "./navbar.js"
+    document.getElementById("navbar").innerHTML = navbar()
+</script>
+<script>
+    var getdata = JSON.parse(localStorage.getItem("Products")) || []
+    console.log(getdata)
+    getdata.forEach(function (ele, index) {
+        var card = document.createElement("div")
+
+        var photo = document.createElement("img");
+        photo.setAttribute("src", ele.image)
+        photo.setAttribute("id", "src");
+
+        var info = document.createElement("div")
+        info.setAttribute("id", "divfo")
+
+        var name = document.createElement("h3")
+        name.innerText = "Product Name: " + ele.name;
+        name.style.margin = "2px";
+
+        var price = document.createElement("h3");
+        price.innerText = "price :  ₹ " + ele.price;
+        price.style.margin = "2px"
+
+        var category = document.createElement("h3")
+        category.innerText = "Category : " + ele.category;
+        category.style.margin = "2px";
+
+        var gender = document.createElement("h4");
+        gender.innerText = "Gender: " + ele.gender;
+        gender.style.margin = "2px";
+
+        var bool = document.createElement("h3");
+        bool.innerText = ele.sold;
+        bool.style.margin = "2px";
+
+        var dele = document.createElement("button");
+        dele.innerText = "Remove"
+        dele.style.cursor = "pointer";
+
+        dele.addEventListener("click", function () {
+            getdata.splice(index, 1)
+            localStorage.setItem("Products", JSON.stringify(getdata));
+            window.location.reload()
+        })
+
+        var sold = document.createElement("button");
+        sold.innerText = "sold";
+        sold.style.cursor = "pointer";
+        sold.addEventListener("click", fochange)
+        function fochange() {
+            if (bool.innerText == "false") {
+                bool.innerText = "true"
+                sold.style.background = "red"
+            }
+            else if (bool.innerText == "true") {
+                bool.innerText = "false"
+                sold.style.background = "green"
+            }
+            console.log(bool.innerText)
+        }
+
+        info.append(name, price, category, gender, bool, dele, sold)
+        card.append(photo, info)
+        document.querySelector("#container").append(card)
+
+    });
+
+    var item = document.querySelector("#item");
+    item.innerText = "Items - " + getdata.length
+
+</script>
